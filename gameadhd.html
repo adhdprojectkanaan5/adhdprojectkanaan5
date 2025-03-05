@@ -1,0 +1,191 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>CARD MEMORIZING AND PAIRING GAME </title>
+<style>
+body {
+  text-align: center;
+}
+#papan-permainan {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr); 
+  align-items: center;
+  grid-gap: 3px;
+  justify-content: center;
+}
+.kartu {
+  width: 100px;
+  height: 150px;
+  margin: 10px;
+  display: inline-block;
+  background-color: #5b7c6c;
+  border: 1px solid #000;
+  cursor: pointer;
+  perspective: 1000px; 
+}
+.isi-kartu {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.5s;
+}
+.kartu.terbuka .isi-kartu {
+  transform: rotateY(180deg);
+}
+.depan-kartu,
+.belakang-kartu {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+.depan-kartu {
+  background-image:url(https://static.vecteezy.com/system/resources/previews/001/762/604/original/colorful-abstract-pattern-free-vector.jpg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2em;
+  color: #060505;
+  background-size: contain; 
+  
+  background-position: center;
+}
+
+.belakang-kartu {
+  background-color: #eee;
+  transform: rotateY(180deg);
+}
+.belakang-kartu img {
+  max-width: 100%;
+  max-height: 100%;
+}
+</style>
+
+<link rel="stylesheet" href="styleadhd.css">
+
+</head>
+<body>
+   <header> 
+    <main>
+      <h1>ADHD</h1>
+        <h3>PTS BIOLOGI, PP, MULOK, BK - SMA KRISTEN KANAAN</h3>
+        <img src="https://kanaan.sch.id/wp-content/uploads/2022/11/christian-school-sekolah-kristen-swasta-terbaik-kanaan-sekolahkristen-logo-kanaan-2.png" alt="kanaan"></img>  </section>
+        <h3>Kelompok 5 - Bryan, Calvin, Charlene, Valerine (XI.1) <br>
+          Keiko, Marchelo, William (XI.2)</h3></main>
+        </header> 
+    <nav>
+        <a href="adhd2.html">Home</a>
+        <a href="aboutadhd.html">More About ADHD</a>
+        <a href="gameadhd.html">Memorizing Game</a>
+        
+       
+    </nav>
+
+    <h2> <span style="background-color: rgb(252, 252, 251);"> Memorizing and Pairing Game </span></h2>
+<div id="papan-permainan">
+</div>
+
+<script>
+const kartu = [
+{ gambar: 'watermelon.webp' },
+  { gambar: "https://png.pngtree.com/png-clipart/20230126/original/pngtree-fresh-red-apple-png-image_8930987.png" },
+  { gambar: "https://static.vecteezy.com/system/resources/previews/013/352/749/original/freshly-peeled-banana-png.png" },
+  { gambar: "https://th.bing.com/th/id/OIP.GqqWLmKBZrwrWWFRPIFFEQHaHa?rs=1&pid=ImgDetMain"},
+  { gambar:"https://cdn.mos.cms.futurecdn.net/4wwQNKxhra9z9oUaPfwkP3-1200-80.jpg"},
+  { gambar: "https://th.bing.com/th/id/OIP.lhjGnMlcUFLEsRJkVgx5UAHaF9?rs=1&pid=ImgDetMain"},
+  
+  { gambar: 'watermelon.webp' },
+  { gambar: "https://png.pngtree.com/png-clipart/20230126/original/pngtree-fresh-red-apple-png-image_8930987.png" },
+  { gambar: "https://static.vecteezy.com/system/resources/previews/013/352/749/original/freshly-peeled-banana-png.png" },
+  { gambar: "https://th.bing.com/th/id/OIP.GqqWLmKBZrwrWWFRPIFFEQHaHa?rs=1&pid=ImgDetMain"},
+  { gambar:"https://cdn.mos.cms.futurecdn.net/4wwQNKxhra9z9oUaPfwkP3-1200-80.jpg"},
+  { gambar: "https://th.bing.com/th/id/OIP.lhjGnMlcUFLEsRJkVgx5UAHaF9?rs=1&pid=ImgDetMain"},
+];
+
+function acakArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+acakArray(kartu);
+
+let kartuTerbuka = [];
+let pasanganDitemukan = 0;
+
+function buatKartu(kartu) {
+  const kartuElement = document.createElement("div");
+  kartuElement.classList.add("kartu");
+
+  const isiKartuElement = document.createElement("div");
+  isiKartuElement.classList.add("isi-kartu");
+
+  const depanKartuElement = document.createElement("div");
+  depanKartuElement.classList.add("depan-kartu");
+  
+
+  const belakangKartuElement = document.createElement("div");
+  belakangKartuElement.classList.add("belakang-kartu");
+  const gambarElement = document.createElement("img");
+  gambarElement.src = kartu.gambar;
+  belakangKartuElement.appendChild(gambarElement);
+
+  isiKartuElement.appendChild(depanKartuElement);
+  isiKartuElement.appendChild(belakangKartuElement);
+  kartuElement.appendChild(isiKartuElement);
+
+  kartuElement.addEventListener("click", balikKartu);
+
+  return kartuElement;
+}
+
+function balikKartu() {
+  if (kartuTerbuka.length < 2 && !this.classList.contains("terbuka")) {
+    this.classList.add("terbuka");
+    kartuTerbuka.push(this);
+
+    if (kartuTerbuka.length === 2) {
+      setTimeout(cekPasangan, 500);
+    }
+  }
+}
+
+function cekPasangan() {
+  const kartu1 = kartuTerbuka[0];
+  const kartu2 = kartuTerbuka[1];
+
+  const gambar1 = kartu1.querySelector(".belakang-kartu img").src;
+  const gambar2 = kartu2.querySelector(".belakang-kartu img").src;
+
+  if (gambar1 === gambar2) {
+    pasanganDitemukan++;
+    kartu1.removeEventListener("click", balikKartu);
+    kartu2.removeEventListener("click", balikKartu);
+    kartuTerbuka = [];
+
+    if (pasanganDitemukan === kartu.length / 2) {
+      alert("Anda berhasil!");
+    }
+  } else {
+    kartu1.classList.remove("terbuka");
+    kartu2.classList.remove("terbuka");
+    kartuTerbuka = [];
+  }
+}
+
+const papanPermainan = document.getElementById("papan-permainan");
+for (let i = 0; i < kartu.length; i++) {
+  const kartuElement = buatKartu(kartu[i]);
+  papanPermainan.appendChild(kartuElement);
+}
+</script>
+
+<footer>
+  &copy; 2025 Kanaan. All rights reserved.
+</footer>
+
+</body>
+</html>
