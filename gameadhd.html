@@ -11,8 +11,9 @@ body {
 }
 #papan-permainan {
   display: grid;
-  grid-template-columns: repeat(6, 1fr); 
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); 
   align-items: center;
+  max-width: 97vw;
   grid-gap: 3px;
   justify-content: center;
 }
@@ -20,12 +21,12 @@ body {
   width: 100px;
   height: 150px;
   margin: 10px;
+  aspect-ratio: 2 / 3;
   display: inline-block;
   background-color: #5b7c6c;
   border: 1px solid #000;
   cursor: pointer;
   perspective: 1000px; 
-}
 .isi-kartu {
   position: relative;
   width: 100%;
